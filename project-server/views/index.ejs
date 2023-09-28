@@ -46,7 +46,7 @@
                         <span><i class="uil uil-home"></i><h4>HOME</h4></span>
                     </a>
                     <a class="menu-item">
-                        <span><i class="uil uil-compass"></i><h4>explore</h4></span>
+                        <span><i class="uil uil-compass"></i><h4>explorer</h4></span>
                     </a>
                     <a class="menu-item"  id="notifications">
                         <span><i class="uil uil-bell"><small class="notification-count">3</small></i><h4>Notifications</h4></span>
@@ -129,12 +129,14 @@
                         <p class="name">Story4</p>
                     </div>
                 </div>
-                <form class="create-post">
+                <form action="/post/new" class="create-post" method="post" enctype="multipart/form-data">
                     <div class="profile-pictures">
                         <img src="images/profile-1.jpg" >
                     </div>
-                    <input type="text" placeholder="Whats on YOur mind">
-                    <input type="submit" class="btn btn-primary" value="post">
+                    <input type="text" name="postText" placeholder="Whats on your mind">
+                    <label for="postImg" class="custom-file-input">+</label>
+                    <input type="file" id="postImg" name="postImg" accept="image/*" required>
+                    <input type="submit" name="postImg" class="btn btn-primary" value="post">
                 </form>
                 <div class="feeds">
                     <div class="feed">

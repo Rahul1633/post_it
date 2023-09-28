@@ -513,3 +513,25 @@ margin-top:1rem;
     width: 60vw;
     height: 80vh;
 }
+
+.custom-file-input {
+    display: inline-block;
+    padding: 5px 12px;
+    margin: 2px;
+    cursor: pointer;
+    height: auto;
+    color: #888;
+    border: none;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.custom-file-input:hover {
+    background-color: #bbb;
+    color: #eee;
+}
+
+/* Hide the default file input */
+input[type="file"] {
+    display: none;
+}

@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\images",
+    "\\middleware",
+    "\\models",
+    "\\project-server",
+    "\\project-server\\controllers",
+    "\\project-server\\models",
+    "\\project-server\\views",
+    "\\public",
+    "\\public\\stylesheets"
+  ],
+  "SelectedNode": "\\public\\stylesheets\\styles.css",
+  "PreviewInSolutionExplorer": false
+}
