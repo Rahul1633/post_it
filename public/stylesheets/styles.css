@@ -295,7 +295,6 @@ main .container .left .profile {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 1rem;
     background: var(--color-white);
     padding: 0.4rem var(--card-padding);
     border-radius: var(--border-radius);
@@ -531,7 +530,26 @@ margin-top:1rem;
     color: #eee;
 }
 
-/* Hide the default file input */
-input[type="file"] {
-    display: none;
+form {
+    overflow: hidden;
+    height: 55px;
+    border-radius: var(--border-radius);
+    transition: height 1s;
+    padding: 0;
+    background: white;
+    margin-top: 1rem;
+}
+
+.post-img-input {
+    display: block;
+    background: white;
+    position: relative;
+    top: 5px;
+    padding-left: 20px;
+}
+
+#uploaded-img {
+    max-height: 300px;
+    max-width: 300px;
+    padding: 10px;
 }

@@ -129,14 +129,17 @@
                         <p class="name">Story4</p>
                     </div>
                 </div>
-                <form action="/post/new" class="create-post" method="post" enctype="multipart/form-data">
+                <form action="/post/new" id="post-form" method="post" enctype="multipart/form-data">
+                <div class="create-post">
                     <div class="profile-pictures">
                         <img src="images/profile-1.jpg" >
                     </div>
                     <input type="text" name="postText" placeholder="Whats on your mind">
-                    <label for="postImg" class="custom-file-input">+</label>
-                    <input type="file" id="postImg" name="postImg" accept="image/*" required>
+                    <label class="custom-file-input" onclick="addpic()">+</label>
                     <input type="submit" name="postImg" class="btn btn-primary" value="post">
+                    </div>
+                    <input type="file" class="post-img-input" name="postImg" accept="image/*" required onchange="addedpic()">
+                    <img src="" style="display:none;" id="uploaded-img">
                 </form>
                 <div class="feeds">
                     <div class="feed">

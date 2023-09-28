@@ -7,6 +7,12 @@ const colorpalette = document.querySelectorAll('.choose-color span');
 const Bg1 = document.querySelector('.bg1');
 const Bg2 = document.querySelector('.bg2');
 const Bg3 = document.querySelector('.bg3');
+const createform = document.querySelector('.create-post');
+const picbtn = document.querySelector('.custom-file-input');
+const postimgsel = document.querySelector('.post-img-input');
+const postform = document.getElementById("post-form");
+const postshowimg = document.getElementById("uploaded-img");
+
 const changeActiveitem = () => {
     menuItems.forEach(item => {
         item.classList.remove('active');
@@ -133,3 +139,29 @@ Bg3.addEventListener('click', () => {
     Bg2.classList.remove('active');
     changeBG();
 });
+
+function addpic() {
+    if (window.getComputedStyle(postform).height === "55px") {
+        postform.style.height = "90px";
+        picbtn.textContent = "-";
+    }
+    else {
+        postform.style.height = "55px";
+        picbtn.textContent = "+";
+    }
+}
+
+function addedpic() {
+    const file = postimgsel.files[0];
+    if (file) {
+        postform.style.height = "400px";
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            postshowimg.src = e.target.result;
+            postshowimg.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    } else {
+        postform.style.height = "90px";
+    }
+}
