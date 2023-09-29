@@ -65,7 +65,7 @@ router.post('/post/new', upload.single('postImg'), async (req, res) => {
         // Assuming 'filename' property is added by multer to the request object
         const postImgPath = "./images/" + req.file.filename;
         const posted = await Post.create({ postText, postImg: postImgPath });
-        res.status(200).redirect('https://post-it-three-kappa.vercel.app/');
+        res.status(200).json(post);
     } catch (err) {
         res.status(400).json(err);
     }
