@@ -1,7 +1,6 @@
 {
   "ExpandedNodes": [
     "",
-    "\\images",
     "\\middleware",
     "\\models",
     "\\project-server",
@@ -9,8 +8,9 @@
     "\\project-server\\models",
     "\\project-server\\views",
     "\\public",
+    "\\public\\javascripts",
     "\\public\\stylesheets"
   ],
-  "SelectedNode": "\\public\\stylesheets\\styles.css",
+  "SelectedNode": "\\public\\javascripts\\ra.js",
   "PreviewInSolutionExplorer": false
 }

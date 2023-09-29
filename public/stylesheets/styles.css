@@ -549,7 +549,9 @@ form {
 }
 
 #uploaded-img {
-    max-height: 300px;
-    max-width: 300px;
+    max-height: 330px;
+    max-width: 500px;
+    width: auto;
     padding: 10px;
+    border-radius: 10%;
 }
