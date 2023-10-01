@@ -1,7 +1,7 @@
 {
   "ExpandedNodes": [
     "",
-    "\\models",
+    "\\images",
     "\\project-server",
     "\\project-server\\controllers",
     "\\project-server\\models",
@@ -11,6 +11,6 @@
     "\\public\\javascripts",
     "\\public\\stylesheets"
   ],
-  "SelectedNode": "\\app.js",
+  "SelectedNode": "\\.env",
   "PreviewInSolutionExplorer": false
 }

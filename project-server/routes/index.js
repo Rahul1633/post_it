@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'production') {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './images/');
+        cb(null, './public/images/');
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname);
@@ -24,6 +24,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const renderHomepage = (req, res, responseBody) => {
+    console.log(responseBody);
     res.render('index', {
         posts: responseBody
     });
@@ -35,7 +36,10 @@ router.get('/', (req, res, next) => {
         url: `${apiOptions.server}${path}`,
         method: 'GET',
         json: {},
-        qs: {}
+        qs: {
+            email: "21eg106b01@anurag.edu.in",
+            password: "anurag123456"
+        }
     };
     request(
         requestOptions,

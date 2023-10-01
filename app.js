@@ -21,7 +21,8 @@ app.set('views', path.join(__dirname, 'project-server', 'views'))
 app.set('view engine', 'ejs');
 
 
-app.use('/', requireAuth, indexRouter);
+//app.use('/', requireAuth, indexRouter);
+app.use('/', indexRouter);
 app.use('/user', userRouter);
 
 app.listen(8000, ()=>{});
