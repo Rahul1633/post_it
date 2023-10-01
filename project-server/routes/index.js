@@ -1,8 +1,13 @@
 const express = require('express');
 const request = require('request');
 const router = express.Router();
-const multer = require('multer');
+const { Storage } = require('@google-cloud/storage');
+const storage = new Storage();
+const bucket = storage.bucket('postit_resources');
+const upload = require('../../middleware/multer');
 const { Post } = require('../../models/schema');
+
+const gcdpath = `https://storage.googleapis.com/postit_resources/images/`;
 
 const apiOptions = {
     server: "http://localhost:8000"
@@ -12,16 +17,6 @@ if (process.env.NODE_ENV === 'production') {
 };
 
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/images/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-    },
-});
-
-const upload = multer({ storage: storage });
 
 const renderHomepage = (req, res, responseBody) => {
     console.log(responseBody);
@@ -62,17 +57,46 @@ router.get('/posts', async(req, res) => {
 });
 
 router.post('/post/new', upload.single('postImg'), async (req, res) => {
-    console.log("here!!");
     const { postText } = req.body;
-    console.log("here 2!!");
+    let imgSrcVar = { source: "NOT FOUND.png" };
     try {
-        // Assuming 'filename' property is added by multer to the request object
-        const postImgPath = "./images/" + req.file.filename;
+        uploadFile(req, res, imgSrcVar);
+        const postImgPath = gcdpath + imgSrcVar.source;
         await Post.create({ postText, postImg: postImgPath });
         res.status(200).redirect('/');
     } catch (err) {
         res.status(400).json(err);
     }
 });
+
+async function uploadFile(req, res, imgSrcVar) {
+    const file = req.file;
+    if (!file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    const fileName = "img-" + Math.random().toString(8) + ".jpeg";
+    const gcsFileName = `images/${fileName}`;
+    imgSrcVar.source = `${fileName}`;
+
+    const stream = bucket.file(gcsFileName).createWriteStream({
+        metadata: {
+            contentType: file.mimetype,
+        },
+    });
+
+    stream.on('error', (err) => {
+        console.error(err);
+        return res.status(500).send('Error uploading file to Google Cloud Storage.');
+    });
+
+    stream.on('finish', () => {
+        const publicUrl = `https://storage.googleapis.com/postit_resources/${gcsFileName}`;
+        console.log(`Images saved to ${publicUrl}`);
+        res.status(200);
+    });
+
+    stream.end(file.buffer);
+}
 
 module.exports = router;
