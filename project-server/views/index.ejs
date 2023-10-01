@@ -188,17 +188,9 @@
                     <input type="file" class="post-img-input" name="postImg" accept="image/*" required onchange="addedpic()">
                     <img src="" style="display:none;" id="uploaded-img">
                 </form>
-                <div class="post-test">
-                    <ul>
-                        <% posts.forEach(post => { %>
-                            <div  style="border: 2px solid black;">
-                                <li><%= post.postText %></li>
-                                <img src="<%= post.postImg %>">
-                            </div>
-                        <% }); %>
-                    </ul>
-                </div>
+
                 <div class="feeds">
+                    <% posts.forEach(post => { %>
                     <div class="feed">
                         <div class="head">
                             <div class="user">
@@ -214,8 +206,11 @@
                                 <i class="uil uil-ellipsis-h"></i>
                             </span>
                         </div>
+                        <div class="postText">
+                            <p><%= post.postText %></p>
+                        </div>
                         <div class="photo">
-                            <img src="images/feed-1.jpg" alt="">
+                            <img src="<%= post.postImg %>" alt="">
                         </div>
                         <div class="action-button">
                             <div class="interactions-buttons">
@@ -238,6 +233,7 @@
                             <p><b>user1</b>this is the post</p>
                         </div>
                     </div>
+                    <% }); %>
                 </div>
             </div>
             <div class="right">
