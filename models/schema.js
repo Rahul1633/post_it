@@ -3,6 +3,10 @@ const { isEmail} = require('validator');
 const bcrypt = require('bcrypt')
 const Schema = mongoose.Schema;
 
+const postSchema = new Schema({
+    postText: String,
+    postImg: String
+});
 
 const userSchema = new Schema({
     name: {
@@ -44,6 +48,7 @@ userSchema.pre('save', async function (next) {
 
 
 const User = mongoose.model('user', userSchema);
+const Post = mongoose.model('post', postSchema);
 
 
-module.exports = {User};
+module.exports = {User, Post};

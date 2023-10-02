@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
-const JWT = process.env.JWT;
+const JWT = `${process.env.JWT}`;
 
 const requireAuth = async (req, res, next) => {
     if(req.path === '/user/login' || req.path === '/user/register'){

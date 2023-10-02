@@ -7,6 +7,51 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
     <link rel="stylesheet" href="/stylesheets/styles.css">
 
+    <style>    
+        .custom-file-input {
+            display: inline-block;
+            padding: 5px 12px;
+            margin: 2px;
+            cursor: pointer;
+            height: auto;
+            color: #888;
+            border: none;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .custom-file-input:hover {
+            background-color: #bbb;
+            color: #eee;
+        }
+
+        form {
+            overflow: hidden;
+            height: 55px;
+            border-radius: var(--border-radius);
+            transition: height 1s;
+            padding: 0;
+            background: white;
+            margin-top: 1rem;
+        }
+
+        .post-img-input {
+            display: block;
+            background: white;
+            position: relative;
+            top: 5px;
+            padding-left: 20px;
+        }
+
+        #uploaded-img {
+            max-height: 330px;
+            max-width: 500px;
+            width: auto;
+            padding: 10px;
+            border-radius: 10%;
+        }
+    </style>
+
 </head>
 <body>
     <nav>
@@ -21,7 +66,9 @@
                  <div class="create">
                     <label class=" btn btn-primary" for="create-posts">create</label>
                     <div class="profile-pictures">
+                        <a href="./user/login">
                         <img src="images/profile-1.jpg" alt="">
+                        </a>
                     </div>
                  
             </div>
@@ -46,7 +93,7 @@
                         <span><i class="uil uil-home"></i><h4>HOME</h4></span>
                     </a>
                     <a class="menu-item">
-                        <span><i class="uil uil-compass"></i><h4>explore</h4></span>
+                        <span><i class="uil uil-compass"></i><h4>explorer</h4></span>
                     </a>
                     <a class="menu-item"  id="notifications">
                         <span><i class="uil uil-bell"><small class="notification-count">3</small></i><h4>Notifications</h4></span>
@@ -129,14 +176,21 @@
                         <p class="name">Story4</p>
                     </div>
                 </div>
-                <form class="create-post">
+                <form action="/post/new" id="post-form" method="post" enctype="multipart/form-data">
+                <div class="create-post">
                     <div class="profile-pictures">
                         <img src="images/profile-1.jpg" >
                     </div>
-                    <input type="text" placeholder="Whats on YOur mind">
-                    <input type="submit" class="btn btn-primary" value="post">
+                    <input type="text" name="postText" placeholder="Whats on your mind">
+                    <label class="custom-file-input" onclick="addpic()">+</label>
+                    <input type="submit" name="postImg" class="btn btn-primary" value="post">
+                    </div>
+                    <input type="file" class="post-img-input" name="postImg" accept="image/*" required onchange="addedpic()">
+                    <img src="" style="display:none;" id="uploaded-img">
                 </form>
+
                 <div class="feeds">
+                    <% posts.forEach(post => { %>
                     <div class="feed">
                         <div class="head">
                             <div class="user">
@@ -152,8 +206,11 @@
                                 <i class="uil uil-ellipsis-h"></i>
                             </span>
                         </div>
+                        <div class="postText">
+                            <p><%= post.postText %></p>
+                        </div>
                         <div class="photo">
-                            <img src="images/feed-1.jpg" alt="">
+                            <img src="<%= post.postImg %>" alt="">
                         </div>
                         <div class="action-button">
                             <div class="interactions-buttons">
@@ -176,6 +233,7 @@
                             <p><b>user1</b>this is the post</p>
                         </div>
                     </div>
+                    <% }); %>
                 </div>
             </div>
             <div class="right">
@@ -240,6 +298,175 @@
     </div>
         </div>
     </div>
-    <script src="/javascripts/ra.js"></script>
+
+    <script type="text/javascript">
+        const menuItems = document.querySelectorAll('.menu-item');
+        const theme = document.querySelector('#theme');
+        const themeModal = document.querySelector('.customize-theme');
+        const fontSizes = document.querySelectorAll('.choose-size span');
+        const root = document.querySelector(':root');
+        const colorpalette = document.querySelectorAll('.choose-color span');
+        const Bg1 = document.querySelector('.bg1');
+        const Bg2 = document.querySelector('.bg2');
+        const Bg3 = document.querySelector('.bg3');
+        const createform = document.querySelector('.create-post');
+        const picbtn = document.querySelector('.custom-file-input');
+        const postimgsel = document.querySelector('.post-img-input');
+        const postform = document.getElementById("post-form");
+        const postshowimg = document.getElementById("uploaded-img");
+
+        const changeActiveitem = () => {
+            menuItems.forEach(item => {
+                item.classList.remove('active');
+            });
+        };
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                changeActiveitem();
+                item.classList.add('active');
+                if (item.id != 'notifications') {
+                    document.querySelector('.notification-popup').style.display = 'none';
+                } else {
+                    const notificationPopup = document.querySelector('.notification-popup');
+                    notificationPopup.style.display = 'block';
+                    const notificationCount = document.querySelector('#notifications .notification-count');
+                    notificationCount.style.display = 'none';
+                }
+            });
+        });
+        const openThemeModal = () => {
+            themeModal.style.display = 'grid';
+        }
+        const closeThemeModal = (e) => {
+            if (e.target.classList.contains('customize-theme')) {
+                themeModal.style.display = 'none';
+            }
+        }
+        themeModal.addEventListener('click', closeThemeModal);
+        theme.addEventListener('click', openThemeModal);
+        const removeSizeSelector = () => {
+            fontSizes.forEach(size => {
+                size.classList.remove('active');
+            })
+        }
+
+        fontSizes.forEach(size => {
+
+            size.addEventListener('click', () => {
+                removeSizeSelector();
+                let fontSize;
+                size.classList.toggle('active');
+
+                if (size.classList.contains('font-size-1')) {
+                    fontSize = '10px';
+                    root.style.setProperty('--sticky-top-left', '5.4rem');
+                    root.style.setProperty('--sticky-top-right', '5.4rem');
+                }
+                else if (size.classList.contains('font-size-2')) {
+                    fontSize = '13px';
+                    root.style.setProperty('--sticky-top-left', '5.4rem');
+                    root.style.setProperty('--sticky-top-right', '-7rem');
+                }
+                else if (size.classList.contains('font-size-3')) {
+                    fontSize = '16px';
+                    root.style.setProperty('--sticky-top-left', '-2rem');
+                    root.style.setProperty('--sticky-top-right', '-17rem');
+                }
+                else if (size.classList.contains('font-size-4')) {
+                    fontSize = '19px';
+                    root.style.setProperty('--sticky-top-left', '-5rem');
+                    root.style.setProperty('--sticky-top-right', '-25rem');
+                }
+                else if (size.classList.contains('font-size-5')) {
+                    fontSize = '22px';
+                    root.style.setProperty('--sticky-top-left', '-12rem');
+                    root.style.setProperty('--sticky-top-right', '-35rem');
+                }
+                document.querySelector('html').style.fontSize = fontSize;
+            })
+
+        })
+        colorpalette.forEach(color => {
+            color.addEventListener('click', () => {
+                let primaryHue;
+                if (color.classList.contains('color-1')) {
+                    primaryHue = 252;
+                }
+                else if (color.classList.contains('color-2')) {
+                    primaryHue = 52;
+                }
+                else if (color.classList.contains('color-3')) {
+                    primaryHue = 352;
+                }
+                else if (color.classList.contains('color-4')) {
+                    primaryHue = 152;
+                }
+                else if (color.classList.contains('color-5')) {
+                    primaryHue = 202;
+                }
+                root.style.setProperty('--primary-color-hue', primaryHue);
+            })
+        })
+        let lightColorLightness;
+        let whiteColorLightness;
+        let darkColorLightness;
+        const changeBG = () => {
+            root.style.setProperty('--light-color-lightness', lightColorLightness);
+            root.style.setProperty('--white-color-lightness', whiteColorLightness);
+            root.style.setProperty('--dark-color-lightness', darkColorLightness);
+        }
+        Bg1.addEventListener('click', () => {
+
+            Bg1.classList.add('active');
+            Bg2.classList.remove('active');
+            Bg3.classList.remove('active');
+            window.location.reload();
+        });
+        Bg2.addEventListener('click', () => {
+            darkColorLightness = '95%';
+            whiteColorLightness = '20%';
+            lightColorLightness = '15%'; 
+            Bg2.classList.add('active');
+            Bg1.classList.remove('active');
+            Bg3.classList.remove('active');
+            changeBG();
+        });
+        Bg3.addEventListener('click', () => {
+            darkColorLightness = '95%';
+            whiteColorLightness = '10%';
+            lightColorLightness = '0%'; 
+            Bg3.classList.add('active');
+            Bg1.classList.remove('active');
+            Bg2.classList.remove('active');
+            changeBG();
+        });
+
+        function addpic() {
+            if (window.getComputedStyle(postform).height === "55px") {
+                postform.style.height = "90px";
+                picbtn.textContent = "-";
+            }
+            else {
+                postform.style.height = "55px";
+                picbtn.textContent = "+";
+            }
+        }
+
+        function addedpic() {
+            const file = postimgsel.files[0];
+            if (file) {
+                postform.style.height = "400px";
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    postshowimg.src = e.target.result;
+                    postshowimg.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            } else {
+                postform.style.height = "90px";
+            }
+        }
+    </script>
 </body>
 </html>

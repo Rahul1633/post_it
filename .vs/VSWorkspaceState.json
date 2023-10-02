@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\middleware",
+    "\\project-server",
+    "\\project-server\\controllers",
+    "\\project-server\\models",
+    "\\project-server\\routes",
+    "\\project-server\\views"
+  ],
+  "SelectedNode": "\\middleware\\multer.js",
+  "PreviewInSolutionExplorer": false
+}
