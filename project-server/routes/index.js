@@ -31,10 +31,7 @@ router.get('/', (req, res, next) => {
         url: `${apiOptions.server}${path}`,
         method: 'GET',
         json: {},
-        qs: {
-            email: "21eg106b01@anurag.edu.in",
-            password: "anurag123456"
-        }
+        qs: {}
     };
     request(
         requestOptions,
@@ -45,7 +42,8 @@ router.get('/', (req, res, next) => {
   // res.sendFile('login.html', { root: 'project-server/views' });
 });
 
-router.get('/posts', async(req, res) => {
+router.get('/posts', async (req, res) => {
+    console.log("here");
     try {
         const data = await Post.find({})
             .then(function (posts) {

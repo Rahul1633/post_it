@@ -1,13 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\images",
+    "\\middleware",
+    "\\project-server",
     "\\project-server\\controllers",
     "\\project-server\\models",
     "\\project-server\\routes",
-    "\\project-server\\views",
-    "\\public"
+    "\\project-server\\views"
   ],
-  "SelectedNode": "\\images\\1696159349570-120eb665-6fc2-4e04-abf0-2b2e829d50fd1668856677971PetBeds1.webp",
+  "SelectedNode": "\\middleware\\multer.js",
   "PreviewInSolutionExplorer": false
 }
