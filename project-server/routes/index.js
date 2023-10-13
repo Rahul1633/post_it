@@ -19,8 +19,9 @@ if (process.env.NODE_ENV === 'production') {
 
 
 const renderHomepage = (req, res, responseBody) => {
-    console.log(responseBody);
+    const username = req.cookies.username;
     res.render('index', {
+        userName: username,
         posts: responseBody
     });
 };
@@ -30,12 +31,14 @@ router.get('/', (req, res, next) => {
     const requestOptions = {
         url: `${apiOptions.server}${path}`,
         method: 'GET',
+        credentials: 'include',
         json: {},
         qs: {}
     };
     request(
         requestOptions,
         (err, response, body) => {
+            console.log(body);
             renderHomepage(req, res, body);
         }
     );
@@ -43,24 +46,21 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/posts', async (req, res) => {
-    console.log("here");
     try {
-        const data = await Post.find({})
-            .then(function (posts) {
-                res.status(200).json(posts);
-            })
+        const posts = await Post.find({});
+        res.status(200).json(posts.reverse());
     } catch (err) {
         res.status(404).json(err);
     }
 });
 
 router.post('/post/new', upload.single('postImg'), async (req, res) => {
-    const { postText } = req.body;
+    const { userName, postText } = req.body;
     let imgSrcVar = { source: "NOT FOUND.png" };
     try {
         uploadFile(req, res, imgSrcVar);
         const postImgPath = gcdpath + imgSrcVar.source;
-        await Post.create({ postText, postImg: postImgPath });
+        await Post.create({ userName, postText, postImg: postImgPath });
         res.status(200).redirect('/');
     } catch (err) {
         res.status(400).json(err);
@@ -89,8 +89,7 @@ async function uploadFile(req, res, imgSrcVar) {
     });
 
     stream.on('finish', () => {
-        const publicUrl = `https://storage.googleapis.com/postit_resources/${gcsFileName}`;
-        console.log(`Images saved to ${publicUrl}`);
+        console.log(`Images saved`);
         res.status(200);
     });
 

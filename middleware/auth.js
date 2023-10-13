@@ -4,7 +4,7 @@ require('dotenv').config()
 const JWT = `${process.env.JWT}`;
 
 const requireAuth = async (req, res, next) => {
-    if(req.path === '/user/login' || req.path === '/user/register'){
+    if(req.path === '/user/login' || req.path === '/user/register' || req.path === '/posts' || req.path === '/post/new'){
         return next();
     }
     const token = req.cookies.jwt;
@@ -15,7 +15,7 @@ const requireAuth = async (req, res, next) => {
                 console.log(err.message);
                 res.redirect('/user/login');
             } else {
-                console.log(decodedToken);
+                console.log("DECODED TOKEN : " + decodedToken);
                 next();
             }
         })

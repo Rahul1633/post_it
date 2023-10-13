@@ -7,7 +7,7 @@ const router = express.Router();
 
 const JWT = process.env.JWT;
 
-const maxAge= 3* 24* 60* 60;
+const maxAge= 24* 60* 60;
 
 
 const handleErrors = (err) =>{
@@ -71,12 +71,13 @@ router.post ( '/register' , async (req, res) => {
 
 
 router.post('/login', async (req, res) => {
-    const {email, password} = req.body;
-
+    const {name, email, password} = req.body;
+    console.log(name + email + password);
     try {
         const user = await User.login(email, password);
         const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000});
+        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.cookie('username', user.name);
         res.status(200).json({user: user._id});
     } catch(err) {
         const errors = handleErrors(err);

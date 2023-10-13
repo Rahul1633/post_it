@@ -82,9 +82,9 @@
                         <img src="images/profile-1.jpg">
                     </div>
                     <div class="handle">
-                        <h4>rahul goud</h4>
+                        <h4><%= userName %></h4>
                         <p class="text-muted">
-                            @rahul
+                            @<%= userName %>
                         </p>
                     </div>
                 </a>
@@ -178,6 +178,7 @@
                 </div>
                 <form action="/post/new" id="post-form" method="post" enctype="multipart/form-data">
                 <div class="create-post">
+                    <input type="hidden" value="<%= userName %>" name="userName">
                     <div class="profile-pictures">
                         <img src="images/profile-1.jpg" >
                     </div>
@@ -198,7 +199,7 @@
                                     <img src="images/profile-13.jpg" alt="">
                                 </div>
                                 <div class="ingo">
-                                    <h4>Rahul</h4>
+                                    <h4><%= post.userName %></h4>
                                     <small>2min ago</small>
                                 </div>
                             </div>
